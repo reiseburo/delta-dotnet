@@ -21,7 +21,7 @@ public class InsertTests
     [InlineData(100)]
     public async Task File_System_Insert_Variable_Record_Count_Test(int length)
     {
-        var info = Directory.CreateTempSubdirectory();
+        var info = DirectoryHelpers.CreateTempSubdirectory();
         try
         {
             await BaseInsertTest($"file://{info.FullName}", length);

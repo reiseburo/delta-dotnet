@@ -26,11 +26,19 @@ namespace DeltaLake.Bridge
         {
             if (_enumerator.MoveNext())
             {
+#if NETCOREAPP
                 return ValueTask.FromResult(_enumerator.Current);
+#else
+                return new ValueTask<RecordBatch>(_enumerator.Current);
+#endif
             }
 
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+#if NETCOREAPP
             return ValueTask.FromResult<RecordBatch>(default);
+#else
+            return new ValueTask<RecordBatch>(default(RecordBatch));
+#endif
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         }
     }

@@ -57,7 +57,7 @@ public class DeleteTests
         string? predicate,
         int expectedRecords)
     {
-        var info = Directory.CreateTempSubdirectory();
+        var info = DirectoryHelpers.CreateTempSubdirectory();
         try
         {
             await BaseDeleteTest($"file://{info.FullName}", length, predicate, expectedRecords);

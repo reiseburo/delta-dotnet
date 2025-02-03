@@ -60,7 +60,7 @@ public class KernelTests
 
         int numRows = numRowsPerPartition * numConcurrentWriters;
 
-        var tempDir = Directory.CreateTempSubdirectory();
+        var tempDir = DirectoryHelpers.CreateTempSubdirectory();
         using IEngine engine = new DeltaEngine(EngineOptions.Default);
         var builder = new Apache.Arrow.Schema.Builder()
                                 .Field(fb => { fb.Name(stringColumnName); fb.DataType(StringType.Default); fb.Nullable(false); })

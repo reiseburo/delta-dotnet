@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
+using DeltaLake.Extensions;
 
 namespace DeltaLake.Table
 {
@@ -64,11 +64,11 @@ namespace DeltaLake.Table
             var partitionColumns = StringArrayFromPointer(metadata->partition_columns, (int)metadata->partition_columns_count);
             return new DeltaLake.Table.TableMetadata
             {
-                Id = Marshal.PtrToStringUTF8(new IntPtr(metadata->id)) ?? string.Empty,
-                Name = Marshal.PtrToStringUTF8(new IntPtr(metadata->name)),
-                Description = Marshal.PtrToStringUTF8(new IntPtr(metadata->description)),
-                FormatProvider = Marshal.PtrToStringUTF8(new IntPtr(metadata->format_provider)) ?? string.Empty,
-                SchemaString = Marshal.PtrToStringUTF8(new IntPtr(metadata->schema_string)) ?? string.Empty,
+                Id = MarshalExtensions.PtrToStringUTF8(new IntPtr(metadata->id)) ?? string.Empty,
+                Name = MarshalExtensions.PtrToStringUTF8(new IntPtr(metadata->name)),
+                Description = MarshalExtensions.PtrToStringUTF8(new IntPtr(metadata->description)),
+                FormatProvider = MarshalExtensions.PtrToStringUTF8(new IntPtr(metadata->format_provider)) ?? string.Empty,
+                SchemaString = MarshalExtensions.PtrToStringUTF8(new IntPtr(metadata->schema_string)) ?? string.Empty,
                 CreatedTime = DateTimeOffset.FromUnixTimeMilliseconds(metadata->created_time),
                 FormatOptions = KeyValueToDictionaryNullable(metadata->format_options),
                 PartitionColumns = partitionColumns,
@@ -87,7 +87,7 @@ namespace DeltaLake.Table
             for (var i = 0; i < length; i++)
             {
                 var entry = *(pointer + i);
-                result[i] = Marshal.PtrToStringUTF8(new IntPtr(entry)) ?? string.Empty;
+                result[i] = MarshalExtensions.PtrToStringUTF8(new IntPtr(entry)) ?? string.Empty;
             }
 
             return result;

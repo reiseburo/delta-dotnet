@@ -17,6 +17,10 @@ namespace DeltaLake.Bridge
     /// </summary>
     internal class Table : SafeHandle
     {
+#if !NETCOREAPP
+        private unsafe delegate void MetadataRelease(Interop.TableMetadata* metadata);
+#endif
+
         internal static readonly ByteArrayRef SaveModeAppend = ByteArrayRef.FromUTF8("append");
 
         internal static readonly ByteArrayRef SaveModeOverwrite = ByteArrayRef.FromUTF8("overwrite");
@@ -563,7 +567,11 @@ namespace DeltaLake.Bridge
                 }
                 finally
                 {
+#if NETCOREAPP
                     var release = (delegate* unmanaged<Interop.TableMetadata*, void>)result.metadata->release;
+#else
+                    var release = Marshal.GetDelegateForFunctionPointer<MetadataRelease>(result.metadata->release);
+#endif
                     release(result.metadata);
                 }
             }

@@ -10,7 +10,7 @@
 // -----------------------------------------------------------------------------
 
 using System;
-using System.Runtime.InteropServices;
+using DeltaLake.Extensions;
 using DeltaLake.Kernel.Interop;
 
 namespace DeltaLake.Kernel.Callbacks.Errors
@@ -26,8 +26,8 @@ namespace DeltaLake.Kernel.Callbacks.Errors
 #pragma warning disable CS8603, IDE0251 // Possible pointer null reference return is possible when we work with Kernel if the Kernel has a bug
         public string Message
         {
-            get => Marshal.PtrToStringUTF8(msg);
-            set => msg = Marshal.StringToCoTaskMemUTF8(value);
+            get => MarshalExtensions.PtrToStringUTF8(msg);
+            set => msg = MarshalExtensions.StringToCoTaskMemUTF8(value);
         }
 #pragma warning restore CS8603, IDE0251
     }

@@ -96,8 +96,8 @@ namespace DeltaLake.Kernel.Arrow.Handlers
         )
         {
 #pragma warning disable CS8600
-            string tableRoot = Marshal.PtrToStringUTF8((IntPtr)context->TableRoot)?.TrimEnd('/');
-            string parquetAbsolutePath = $"{tableRoot}/{Marshal.PtrToStringUTF8((IntPtr)path.ptr, (int)path.len)}";
+            string tableRoot = MarshalExtensions.PtrToStringUTF8((IntPtr)context->TableRoot)?.TrimEnd('/');
+            string parquetAbsolutePath = $"{tableRoot}/{MarshalExtensions.PtrToStringUTF8((IntPtr)path.ptr, (int)path.len)}";
 #pragma warning restore CS8600
 
             (GCHandle parquetAbsolutePathHandle, IntPtr gcPinnedParquetAbsolutePathPtr) = parquetAbsolutePath.ToPinnedSBytePointer();
@@ -146,7 +146,7 @@ namespace DeltaLake.Kernel.Arrow.Handlers
             for (int i = 0; i < partitionCols->Len; i++)
             {
 #pragma warning disable CS8600
-                string colName = Marshal.PtrToStringUTF8((IntPtr)partitionCols->Cols[i]);
+                string colName = MarshalExtensions.PtrToStringUTF8((IntPtr)partitionCols->Cols[i]);
 #pragma warning restore CS8600
 
                 // The Kernel can currently only report String values back as
@@ -166,13 +166,13 @@ namespace DeltaLake.Kernel.Arrow.Handlers
                     },
                     Marshal.GetFunctionPointerForDelegate<AllocateStringFn>(StringAllocatorCallbacks.AllocateString)
                 );
-                string colVal = colValPtr != null ? Marshal.PtrToStringUTF8((IntPtr)colValPtr) : String.Empty;
+                string colVal = colValPtr != null ? MarshalExtensions.PtrToStringUTF8((IntPtr)colValPtr) : String.Empty;
 #pragma warning restore CS1024, CS8629, CS8600
 
                 if (!string.IsNullOrEmpty(colName) && !string.IsNullOrEmpty(colVal))
                 {
                     colNames.Add(colName);
-                    colValues.Add(colVal);
+                    colValues.Add(colVal!);
                 }
                 else
                 {
@@ -185,8 +185,8 @@ namespace DeltaLake.Kernel.Arrow.Handlers
 
             for (int i = 0; i < colNames.Count; i++)
             {
-                colNamesPtr[i] = (byte*)Marshal.StringToCoTaskMemUTF8(colNames[i]);
-                colValuesPtr[i] = (byte*)Marshal.StringToCoTaskMemUTF8(colValues[i]);
+                colNamesPtr[i] = (byte*)MarshalExtensions.StringToCoTaskMemUTF8(colNames[i]);
+                colValuesPtr[i] = (byte*)MarshalExtensions.StringToCoTaskMemUTF8(colValues[i]);
             }
 
             return new ParquetStringPartitions

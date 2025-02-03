@@ -5,12 +5,12 @@
         <Description>DeltaLake for .NET</Description>
         <IncludeSymbols>true</IncludeSymbols>
         <LangVersion>9.0</LangVersion>
-        <EnablePackageValidation Condition="'$(TargetFramework)' == 'net6.0'">true</EnablePackageValidation>
+        <EnablePackageValidation Condition="'$(TargetFramework)' != 'net8.0'">true</EnablePackageValidation>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <Nullable>enable</Nullable>
-        <TargetFrameworks>net6.0;net8.0;</TargetFrameworks>
+        <TargetFrameworks>net472;net8.0;</TargetFrameworks>
         <VersionSuffix>rc-1</VersionSuffix>
         <PackageTags>deltalake csharp</PackageTags>
         <PackageId>DeltaLake.Net</PackageId>
@@ -20,6 +20,7 @@
         <PackageReference Include="Microsoft.Data.Analysis" Version="0.21.1" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
         <PackageReference Include="Apache.Arrow" Version="18.1.0" />
+        <PackageReference Include="System.Text.Json" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>

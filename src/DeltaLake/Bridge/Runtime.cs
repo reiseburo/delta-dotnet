@@ -52,7 +52,11 @@ namespace DeltaLake.Bridge
             System.Threading.CancellationToken cancellationToken)
         {
             var buffer = ArrayPool<byte>.Shared.Rent(System.Text.Encoding.UTF8.GetByteCount(options.TableLocation));
+#if NETCOREAPP
             var encodedLength = System.Text.Encoding.UTF8.GetBytes(options.TableLocation, buffer);
+#else
+            var encodedLength = System.Text.Encoding.UTF8.GetBytes(options.TableLocation, 0, options.TableLocation.Length, buffer, 0);
+#endif
             try
             {
                 return await LoadTablePtrAsync(buffer.AsMemory(0, encodedLength), options, cancellationToken).ConfigureAwait(false);

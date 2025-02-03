@@ -62,7 +62,7 @@ public static class TableHelpers
         [TableIdentifier.Delta121OnlyStructStats] = "delta-1.2.1-only-struct-stats",
         [TableIdentifier.Delta220PartitionedTypes] = "delta-2.2.0-partitioned-types",
         [TableIdentifier.DeltaLiveTable] = "delta-live-table",
-        [TableIdentifier.Golden] = Path.Join("golden", "data-reader-array-primitives"),
+        [TableIdentifier.Golden] = Path.Combine("golden", "data-reader-array-primitives"),
         [TableIdentifier.HttpRequests] = "http_requests",
         [TableIdentifier.Issue1374] = "issue_1374",
         [TableIdentifier.SimpleCommit] = "simple_commit",
@@ -88,12 +88,12 @@ public static class TableHelpers
 
     public static string LogPath(this TableIdentifier tid, string? pathRoot = null)
     {
-        return Path.Join(pathRoot ?? Settings.TestRoot, Tables[tid], "_delta_log");
+        return Path.Combine(pathRoot ?? Settings.TestRoot, Tables[tid], "_delta_log");
     }
 
     public static string TablePath(this TableIdentifier tid, string? pathRoot = null)
     {
-        return Path.Join(pathRoot ?? Settings.TestRoot, Tables[tid]);
+        return Path.Combine(pathRoot ?? Settings.TestRoot, Tables[tid]);
     }
 
     public static Task<(IEngine engine, ITable table)> SetupTable(string path, int length)

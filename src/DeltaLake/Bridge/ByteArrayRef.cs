@@ -104,7 +104,11 @@ namespace DeltaLake.Bridge
             }
 
             var bytes = ArrayPool<byte>.Shared.Rent(StrictUTF8.GetByteCount(s));
+#if NETCOREAPP
             var length = StrictUTF8.GetBytes(s, bytes);
+#else
+            var length = StrictUTF8.GetBytes(s, 0, s.Length, bytes, 0);
+#endif
             return new RentedByteArrayRef(new ByteArrayRef(bytes.AsMemory(0, length)), bytes, ArrayPool<byte>.Shared);
         }
 

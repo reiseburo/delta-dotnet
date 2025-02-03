@@ -10,7 +10,7 @@
 // -----------------------------------------------------------------------------
 
 using System;
-using System.Runtime.InteropServices;
+using DeltaLake.Extensions;
 using DeltaLake.Kernel.Interop;
 
 namespace DeltaLake.Kernel.Callbacks.Errors
@@ -31,7 +31,7 @@ namespace DeltaLake.Kernel.Callbacks.Errors
             KernelStringSlice msg
         )
         {
-            string message = Marshal.PtrToStringUTF8((IntPtr)msg.ptr) ?? string.Empty;
+            string message = MarshalExtensions.PtrToStringUTF8((IntPtr)msg.ptr) ?? string.Empty;
             throw new InvalidOperationException(
                 $"Kernel engine error of type {etype} occurred with message: {message}"
             );

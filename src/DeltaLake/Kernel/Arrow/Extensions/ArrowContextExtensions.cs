@@ -11,10 +11,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Apache.Arrow;
 using Apache.Arrow.C;
 using Apache.Arrow.Types;
+using DeltaLake.Extensions;
 using DeltaLake.Kernel.Interop;
 using DeltaLake.Kernel.State;
 
@@ -146,8 +146,8 @@ namespace DeltaLake.Kernel.Arrow.Extensions
             for (int i = 0; i < partitionsPtr->Len; i++)
             {
 #pragma warning disable CS8600, CS8604 // If Kernel sends us back null pointers, we are in trouble anyway
-                string colName = Marshal.PtrToStringUTF8((IntPtr)partitionsPtr->ColNames[i]);
-                string colValue = Marshal.PtrToStringUTF8((IntPtr)partitionsPtr->ColValues[i]);
+                string colName = MarshalExtensions.PtrToStringUTF8((IntPtr)partitionsPtr->ColNames[i]);
+                string colValue = MarshalExtensions.PtrToStringUTF8((IntPtr)partitionsPtr->ColValues[i]);
                 IArrowType dataType = DeterminePartitionColumnType(colName, colValue);
 #pragma warning restore CS8600, CS8604
 
@@ -179,8 +179,8 @@ namespace DeltaLake.Kernel.Arrow.Extensions
                 StringArray.Builder columnBuilder = new();
 
 #pragma warning disable CS8600
-                string colName = Marshal.PtrToStringUTF8((IntPtr)partitionsPtr->ColNames[i]);
-                string colValue = Marshal.PtrToStringUTF8((IntPtr)partitionsPtr->ColValues[i]);
+                string colName = MarshalExtensions.PtrToStringUTF8((IntPtr)partitionsPtr->ColNames[i]);
+                string colValue = MarshalExtensions.PtrToStringUTF8((IntPtr)partitionsPtr->ColValues[i]);
 #pragma warning restore CS8600
 
                 Field field = new(colName, StringType.Default, nullable: true);

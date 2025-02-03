@@ -124,7 +124,7 @@ public class DeltaTableTests
     [Fact]
     public async Task Load_Table_Test()
     {
-        var location = Path.Join(Settings.TestRoot, "simple_table");
+        var location = Path.Combine(Settings.TestRoot, "simple_table");
         using IEngine engine = new DeltaEngine(EngineOptions.Default);
         using var table = await engine.LoadTableAsync(new TableOptions() { TableLocation = location }, CancellationToken.None);
         Assert.Equal(4UL, table.Version());
@@ -135,7 +135,7 @@ public class DeltaTableTests
     {
         await Assert.ThrowsAnyAsync<OperationCanceledException>(async () =>
         {
-            var location = Path.Join(Settings.TestRoot, "simple_table");
+            var location = Path.Combine(Settings.TestRoot, "simple_table");
             using IEngine engine = new DeltaEngine(EngineOptions.Default);
             using var table = await engine.LoadTableAsync(new TableOptions() { TableLocation = location }, new CancellationToken(true));
             Assert.Equal(4UL, table.Version());
